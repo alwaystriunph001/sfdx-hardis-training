@@ -39,17 +39,13 @@
             <label>Too Small</label>
         </rules>
     </decisions>
-    <description>Warns the planner when the crew assigned to an installation is a bit too small for the panels it needs.
-US-021-2</description>
+    <description>Warns the planner when the crew assigned to an installation is too small. It warns on every save, which the planners have started to complain about.</description>
     <environments>Default</environments>
     <formulas>
-        <description>True when eight panels a person do not cover the job, and no warning was sent yet</description>
+        <description>True when fewer than two people are assigned.</description>
         <name>crewTooSmall</name>
         <dataType>Boolean</dataType>
-        <expression>AND(
-  {!$Record.Crew_Size__c} * 8 &lt; {!$Record.Panels_Required__c},
-  NOT({!$Record.Crew_Warning_Sent__c})
-)</expression>
+        <expression>{!$Record.Crew_Size__c} &lt; 2</expression>
     </formulas>
     <interviewLabel>Installation Crew Warning {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Installation Crew Warning</label>
@@ -72,9 +68,6 @@ US-021-2</description>
         <label>Create Warning Task</label>
         <locationX>0</locationX>
         <locationY>0</locationY>
-        <connector>
-            <targetReference>Mark_Warning_Sent</targetReference>
-        </connector>
         <faultConnector>
             <targetReference>Log_Fault</targetReference>
         </faultConnector>
@@ -99,24 +92,6 @@ US-021-2</description>
         <object>Task</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
-    <recordUpdates>
-        <description>Set the checkbox to true</description>
-        <name>Mark_Warning_Sent</name>
-        <label>Mark Warning Sent</label>
-        <locationX>0</locationX>
-        <locationY>0</locationY>
-        <faultConnector>
-            <isGoTo>true</isGoTo>
-            <targetReference>Log_Fault</targetReference>
-        </faultConnector>
-        <inputAssignments>
-            <field>Crew_Warning_Sent__c</field>
-            <value>
-                <booleanValue>true</booleanValue>
-            </value>
-        </inputAssignments>
-        <inputReference>$Record</inputReference>
-    </recordUpdates>
     <start>
         <locationX>0</locationX>
         <locationY>0</locationY>
@@ -126,13 +101,6 @@ US-021-2</description>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Crew_Size__c</field>
-            <operator>IsNull</operator>
-            <value>
-                <booleanValue>false</booleanValue>
-            </value>
-        </filters>
-        <filters>
-            <field>Panels_Required__c</field>
             <operator>IsNull</operator>
             <value>
                 <booleanValue>false</booleanValue>
