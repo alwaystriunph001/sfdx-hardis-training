@@ -1,5 +1,4 @@
 /**
- * COMMITING AGAIN 
  * Sample for Lab 2.3. Copy it into force-app/main/default/classes/ as it is.
  *
  * Once this story is deployed, Crew_Size__c is required and no installation

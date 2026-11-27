@@ -1,5 +1,4 @@
 /**
- * COMMITING AGAIN 
  * Sample for Lab 2.3. Copy it into force-app/main/default/classes/ as it is.
  *
  * Gives every installation without a crew size the default crew of two, so that
